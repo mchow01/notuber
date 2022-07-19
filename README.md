@@ -1,8 +1,12 @@
 # Overview
-A deliberately vulnerable Node.js + Express + MongoDB web app
+* A ride sharing-clone written in Node.js + Express + MongoDB
+* Warning: ~~potentially~~ vulnerable 😀
 
 # To Run
-* To complete...
+1. `docker-compose build`
+2. `docker-compose up`
+3. Open up http://localhost:3000 to see web front end
+4. Insert data via `curl` to HTTP POST route `/rides` (e.g., `curl --data "username=Encore&lat=36.126492&lng=-115.165741" http://localhost:3000/rides`)
 
 # Documentation and References
 * Now using `mongo` module, latest. No longer version 2.x.x. https://expressjs.com/en/guide/database-integration.html#mongodb

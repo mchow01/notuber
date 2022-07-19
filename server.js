@@ -27,13 +27,9 @@ app.post('/rides', function(request, response) {
 				"created_at":new Date()
 			};
 			var anHourAgo = new Date(new Date().getTime() - 1000 * 60 * 60);
-			db.collection('passengers', function(errorCollection, collection) {
-				collection.insert(toInsert, function (errorUpdate, result) {
-					db.collection('vehicles', function(errorCollection, vehiclesCollection) {
-						vehiclesCollection.find({"created_at": {$gt: anHourAgo}}).toArray(function(errorFind, vehicles) {
-							response.send(vehicles);
-						});
-					});
+			db.collection('passengers').insert(toInsert, function (errorUpdate, result) {
+				db.collection('vehicles').find({"created_at": {$gt: anHourAgo}}).toArray(function(errorFind, vehicles) {
+					response.send(vehicles);
 				});
 			});
 		}
@@ -67,10 +63,8 @@ app.post('/update', function(request, response) {
 			};
 
 			if (vehicles.indexOf(username) != -1) {
-				db.collection('vehicles', function(errorCollection, collection) {
-					collection.insert(toInsert, function (errorUpdate, result) {
-						response.send('{"status":"Success"}');
-					});
+				db.collection('vehicles').insert(toInsert, function (errorUpdate, result) {
+					response.send('{"status":"Success"}');
 				});
 			}
 			else {
@@ -92,15 +86,13 @@ app.get('/passenger.json', function(request, response) {
 		response.send("[]");
 	}
 	else {
-		db.collection('passengers', function(error, collection) {
-			collection.find({username:usernameEntry}).toArray(function(error, result) {
-				if (!result) {
-					response.send("[]");
-				}
-				else {
-					response.send(result);
-				}
-			});
+		db.collection('passengers').find({username:usernameEntry}).toArray(function(error, result) {
+			if (!result) {
+				response.send("[]");
+			}
+			else {
+				response.send(result);
+			}
 		});
 	}
 });
@@ -111,15 +103,13 @@ app.get('/vehicle.json', function(request, response) {
 		response.send("[]");
 	}
 	else {
-		db.collection('vehicles', function(error, collection) {
-			collection.find({username:usernameEntry}).toArray(function(error, result) {
-				if (!result) {
-					response.send("[]");
-				}
-				else {
-					response.send(result);
-				}
-			});
+		db.collection('vehicles').find({username:usernameEntry}).toArray(function(error, result) {
+			if (!result) {
+				response.send("[]");
+			}
+			else {
+				response.send(result);
+			}
 		});
 	}
 });
@@ -127,24 +117,22 @@ app.get('/vehicle.json', function(request, response) {
 app.get('/', function(request, response) {
 	response.set('Content-Type', 'text/html');
 	var indexPage = '';
-	db.collection('passengers', function(error, collection) {
-		collection.find().sort({"created_at":-1}).toArray(function(error, results) {
-			if (!error) {
-				indexPage += "<!DOCTYPE HTML><html><head><title>Not Uber</title></head><body><h1>Not Uber</h1><ul>";
-				if (results.length == 0) {
-					indexPage += "<li>No passengers</li>";
-				}
-				else {
-					for (var count = 0; count < results.length; count++) {
-						indexPage += "<li>" + results[count].username + " requested a vehicle at " + results[count].lat + ", " + results[count].lng + " on " + results[count].created_at + "</li>";
-					}
-				}
-				indexPage += "</ul></body></html>"
-				response.send(indexPage);
-			} else {
-				response.send('<!DOCTYPE HTML><html><head><title>Not Uber</title></head><body><h1>Not Uber</h1><p>Whoops, something went terribly wrong!</p></body></html>');
+	db.collection('passengers').find().sort({"created_at":-1}).toArray(function(error, results) {
+		if (!error) {
+			indexPage += "<!DOCTYPE HTML><html><head><title>Not Uber</title></head><body><h1>Not Uber</h1><ul>";
+			if (results.length == 0) {
+				indexPage += "<li>No passengers</li>";
 			}
-		});
+			else {
+				for (var count = 0; count < results.length; count++) {
+					indexPage += "<li>" + results[count].username + " requested a vehicle at " + results[count].lat + ", " + results[count].lng + " on " + results[count].created_at + "</li>";
+				}
+			}
+			indexPage += "</ul></body></html>"
+			response.send(indexPage);
+		} else {
+			response.send('<!DOCTYPE HTML><html><head><title>Not Uber</title></head><body><h1>Not Uber</h1><p>Whoops, something went terribly wrong!</p></body></html>');
+		}
 	});
 });
 
