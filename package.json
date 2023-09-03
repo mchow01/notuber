@@ -9,6 +9,6 @@
 		"express": "latest",
 		"body-parser": "latest",
 		"validator": "latest",
-		"mongodb": "latest"
+		"mongodb": "4.17.1"
 	}
 }
