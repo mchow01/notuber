@@ -62,14 +62,9 @@ app.post('/update', function(request, response) {
 				"created_at":new Date()
 			};
 
-			if (vehicles.indexOf(username) != -1) {
-				db.collection('vehicles').insert(toInsert, function (errorUpdate, result) {
+			db.collection('vehicles').insert(toInsert, function (errorUpdate, result) {
 					response.send('{"status":"Success"}');
 				});
-			}
-			else {
-				response.send('{"error":"Access denied"}');
-			}
 		}
 		else {
 			response.send('{"error":"Access denied"}');
