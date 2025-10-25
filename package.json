@@ -6,9 +6,9 @@
 		"start": "node server.js"
 	},
 	"dependencies": {
-		"express": "latest",
-		"body-parser": "latest",
-		"validator": "latest",
+		"express": "4.21.2",
+		"body-parser": "2.0.2",
+		"validator": "13.12.0",
 		"mongodb": "4.17.1"
 	}
 }
