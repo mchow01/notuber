@@ -4,10 +4,12 @@ services:
     container_name: notuber
     ports:
       - '3000:3000'
-    links:
+    depends_on:
       - mongo
     networks:
-      - notuber-network
+      notuber-network:
+        aliases:
+          - mongo   
   mongo:
     container_name: mongo
     image: mongodb/mongodb-community-server:4.4.25-ubi8-20240507T090501Z
